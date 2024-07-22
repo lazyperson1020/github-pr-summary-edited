@@ -238,3 +238,4 @@ fn truncate(s: &str, max_chars: usize) -> &str {
     }
 }
 //lets add some more features
+//check
