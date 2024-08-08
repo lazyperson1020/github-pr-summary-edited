@@ -12,6 +12,26 @@ use llmservice_flows::{
     LLMServiceFlows,
 };
 use std::env;
+#----
+use std::process::Command;
+use std::io;
+async fn trigger_python_script() -> io::Result<()> {
+    let python_script = "fetch_files.py";
+    
+    // Ensure the script and Python executable are in the PATH
+    let output = Command::new("python")
+        .arg(python_script)
+        .output()?;
+
+    if !output.status.success() {
+        eprintln!("Python script failed with status: {}", output.status);
+        eprintln!("stderr: {}", String::from_utf8_lossy(&output.stderr));
+    } else {
+        println!("Python script output: {}", String::from_utf8_lossy(&output.stdout));
+    }
+
+    Ok(())
+}
 
 #[no_mangle]
 #[tokio::main(flavor = "current_thread")]
@@ -237,4 +257,6 @@ fn truncate(s: &str, max_chars: usize) -> &str {
         Some((idx, _)) => &s[..idx],
     }
 }
-//lets add some more features
+
+
+
